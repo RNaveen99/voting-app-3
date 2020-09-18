@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script defer src="/js/vote.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <% include meta-data%>
+  <style>
+    input {
+      color:white;
+    }
+    </style>
+  <title>Vote Board</title>
+</head>
+
+<body>
+  <% include header %>
+  <% include footer %>
+
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      M.updateTextFields();
+    });
+  </script>
+</body>
+
+</html>

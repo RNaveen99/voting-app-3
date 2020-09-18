@@ -1,0 +1,26 @@
+<header>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="/" class="brand-logo">&nu;&omicron;&#882;&epsilon;R</a>
+            <a href="" data-target="mobile-demo" class="sidenav-trigger">
+                <i class="material-icons">menu</i>
+            </a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/vote">Vote</a></li>
+                <li><a href="/vote/vBoard">vBoard</a></li>
+                <li><a href="/vote">Vote</a></li>
+                <li><a href="/results">Results</a></li>
+                <li><a href="/auth/profile">Profile</a></li>
+                <% if(isAuthenticated) {%> <li><a href="/auth/signOut">Sign Out</a></li> <% }%>
+            </ul>
+        </div>
+    </nav>
+
+    <ul class="sidenav" id="mobile-demo">
+        <li><a href="/vote">Vote</a></li>
+        <li><a href="/results">Results</a></li>
+        <li><a href="/auth/profile">Profile</a></li>
+        <% if(isAuthenticated) {%> <li><a href="/auth/signOut">Sign Out</a></li> <% }%>
+    </ul>
+</header>
+<main>
