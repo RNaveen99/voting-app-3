@@ -14,36 +14,48 @@
     <h3 class="center-align">
         <b><%=electionName%></b>
     </h3>
-    <div class="container">
+    <% if (result.length === 0){ %>
+<div class="row">
+    <h1 class="center card col s6 offset-s3">No such election</h1>
+
+</div>    <%} else if (user.voted) {%>
     <div class="row">
-        <form action="/vote" method="POST" class="col s12" id="electionVoting">
-            <div class="row">
-                <% for (let i = 0; i < result.length; i++) { %>
-                    <% let obj = result[i]%>
-                <div class="col s12 l12">
-                    <fieldset>
-                        <legend><h5><%=result[i].post%></h5></legend>
-                        <input type="hidden" class="vLimit" name="vLimit[<%=i%>]" value="<%=obj.votingLimit%>">
-                        <% for (let j = 0; j < obj.candidates.length; j++) { %>
-                            <% let candidate = obj.candidates[j]%>
-                        <p>
-                            <label for="cName<%=i%><%=j%>">
-                                <input type="checkbox" name="cName[<%=i%>][]" id="cName<%=i%><%=j%>" class="cName<%=i%>"
-                                    value="<%=candidate.cName%>" postId="post<%=i%>" candidateId="candidate<%=j%>">
-                                <span style="font-size: 22px;"><%=candidate.cName%></span>
-                            </label>
-                        </p>
-                        <%};%>
-                    </fieldset>
+        <h1 class="center card col s6 offset-s3">Response Recorded</h1>
+    
+    </div>    
+    
+        <% } else { %>
+            <div class="container">
+                <div class="row">
+                    <form action="/vote/<%=electionName%>" method="POST" class="col s12" id="electionVoting">
+                        <div class="row">
+                            <% for (let i = 0; i < result.length; i++) { %>
+                                <% let obj = result[i]%>
+                            <div class="col s12 l12">
+                                <fieldset>
+                                    <legend><h5><%=obj.post%></h5></legend>
+                                    <input type="hidden" class="vLimit" name="vLimit[<%=i%>]" value="<%=obj.votingLimit%>">
+                                    <% for (let j = 0; j < obj.candidates.length; j++) { %>
+                                        <% let candidate = obj.candidates[j]%>
+                                    <p>
+                                        <label for="post<%=i%>candidate<%=j%>">
+                                            <input type="checkbox" name="cName[<%=i%>][]" id="post<%=i%>candidate<%=j%>" class="cName<%=i%>"
+                                                value="<%=candidate.cName%>" postId="<%=i%>" candidateId="<%=j%>">
+                                            <span style="font-size: 22px;"><%=candidate.cName%></span>
+                                        </label>
+                                    </p>
+                                    <%};%>
+                                </fieldset>
+                            </div>
+                            <%};%>
+                        </div>
+                        <button type="submit" class="btn " name="submitbtn" id="submitbtn">Vote</button>
+                    </form>
                 </div>
-                <%};%>
-            </div>
-            <button type="submit" class="btn " name="submitbtn" id="submitbtn">Vote</button>
-        </form>
-    </div>
-    <div id="err" class="red-text row">
-    </div>
-    </div>
+                <div id="err" class="red-text row">
+                </div>
+                </div>
+                <% } %>
 </body>
 
 </html>

@@ -55,11 +55,15 @@ const authRouter = require('./src/routes/authRoutes')();
 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated();
+  res.locals.privileges = false;
+  if (res.locals.isAuthenticated && req.user.privileges === 'admin') {
+    res.locals.privileges = true;
+  }
   next();
 });
 
 app.get('/', (req, res) => {
-  res.render('home');
+  res.redirect('/auth/profile');
 });
 app.use('/results', resultRouter);
 app.use('/vote', voteRouter);

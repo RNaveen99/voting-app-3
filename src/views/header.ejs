@@ -6,10 +6,11 @@
                 <i class="material-icons">menu</i>
             </a>
             <ul class="right hide-on-med-and-down">
-                <li><a href="/vote">Vote</a></li>
+<% if(privileges) { %>
                 <li><a href="/vote/vBoard">vBoard</a></li>
-                <li><a href="/vote">Vote</a></li>
+                <li><a href="/vote/status">Status</a></li>
                 <li><a href="/results">Results</a></li>
+<% } %>
                 <li><a href="/auth/profile">Profile</a></li>
                 <% if(isAuthenticated) {%> <li><a href="/auth/signOut">Sign Out</a></li> <% }%>
             </ul>

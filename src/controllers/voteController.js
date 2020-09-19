@@ -1,6 +1,6 @@
 const debug = require('debug')('app:voteController');
 const { extractElectionData } = require('./helpers/votingHelper')();
-const { addElectionData, updateVotes, loadResults } = require('./helpers/mongo')();
+const { addElectionData, updateVotes, loadResults, updateVoted, findAllUser } = require('./helpers/mongo')();
 
 const voteController = () => {
   
@@ -11,30 +11,21 @@ const voteController = () => {
   };  
 
   const votingPost = async (req, res) => {
-    if (!req.session.hasOwnProperty('data')) {
-      const result = await loadResults(req.body.electionName);
-      debug(result);
-      debug(result.length);
-      if (result.length !== 0) {
-        debug('length == ', result.length);
-        return res.redirect('/vote');
-      }
-      req.session.data = req.body;
-      req.session.data.totalVoter = 0;
-      const temp = extractElectionData(req.session.data);
-      await addElectionData(req.session.data.electionName, temp, req.user._id);
-    } else if (req.session.hasOwnProperty('data')) {
-      try {
-        //debug(req.body);
-        req.session.data.totalVoter++;
-        updateVotes(req.session.data, req);
-      } catch (error) {
-        debug('==============update Votes called==============');
-        debug(error);
-        debug('=========================================');
-      }
+    // debug('voting post started')
+    // debug(req.body)
+    // debug(result)
+    // debug('updatevote started')
+    const { electionName } = req.params;
+    if (! req.user.voted) {
+      const result = await loadResults(electionName);
+      await updateVotes(electionName, result, req.body)
+      await updateVoted(req.user._id)      
     }
-    res.render('voting', { data: req.session.data });
+    // debug('updatevote ended')
+    // debug('updatevoted started')
+
+    // debug('finished----------------------')
+    res.redirect(`${electionName}`)
   };
 
   const vBoardGet = (req, res) => {
@@ -60,11 +51,17 @@ const voteController = () => {
     await addElectionData(electionData.electionName, initializedElectionData, req.user['_id']);
     res.redirect('/auth/profile');
   }
+
+  const statusGet = async (req, res) => {
+    const users = await findAllUser();
+    res.render('status', { users })
+  }
   return {
     votingGet,
     votingPost,
     vBoardGet,
     vBoardPost,
+    statusGet,
   };
 };
 

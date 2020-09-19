@@ -2,7 +2,7 @@ const passport = require('passport');
 const { Strategy } = require('passport-local');
 const { findUser } = require('../../controllers/helpers/mongo')();
 const debug = require('debug')('app:local.strategy');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 
 module.exports = function localStrategy() {
   passport.use(
@@ -15,8 +15,7 @@ module.exports = function localStrategy() {
         (async function mongo() {
           const user = await findUser(username);
           if (user) {
-            if (await bcrypt.compare(password, user.password)) {
-              delete user['password']
+            if (user.password === password) {
               done(null, user);
             } else {
               done(null, false);

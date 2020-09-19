@@ -25,50 +25,31 @@ const mongoHelper = () => {
     );
     client.close();
   }
-  const updateVotes = async (data, req) => {
-    let c;
-    try {
-      const { client, db } = await createConnection();
-      c = client;
-      const col = db.collection(data.electionName);
-  
-      //  await updateEachPost(data);
-      for (const post of data.post) {
-        await updateEachPost(data, req, col, post);
-      }
-    } catch (error) {
-      debug('==============update Votes==============');
-      debug(error);
-      debug('=========================================');
+  const updateVotes = async (electionName, result, body) => {
+    const { client, db } = await createConnection();
+    const col = db.collection(electionName);
+
+    //  await updateEachPost(data);
+    for (const obj of result) {
+      let i = result.indexOf(obj)
+      await updateEachPost(body, col, obj.post, i);
     }
-    c.close();
+    
+    client.close();
   }
-  const updateEachPost = async (data, req, col, post) => {
-    try {
-      const i = data.post.indexOf(post);
-      for (const element of req.body.cName[i]) {
-        debug('=============element======================');
-        debug(element);
-        debug('=========================================');
-        let result = await col.updateOne(
-          { title: post , 'candidates.cName': element },
-          { $inc: { 'candidates.$.votes': 1 } },
-        );
-        debug('--------------update each post--------------');
-        debug(result.result);
-        debug('--------------update each post--------------');
-      }
-    } catch (error) {
-      debug('==============update Each Post==============');
-      debug(error);
-      debug('=========================================');
+  const updateEachPost = async (body, col, post, i) => {
+    for (const element of body.cName[i]) {
+      const result = await col.updateOne(
+        { post , 'candidates.cName': element },
+        { $inc: { 'candidates.$.votes': 1 } },
+      );
     }
   }
   
   const loadResults = async (ename) => {
     const { client, db } = await createConnection();
     const col = db.collection(ename);
-    debug(ename);
+    // debug(ename);
     const result = await col.find({}).toArray();
     client.close();
     return result;
@@ -90,12 +71,30 @@ const mongoHelper = () => {
     client.close();
     return result;
   }
+  const findAllUser = async () => {
+    const { client, db } = await createConnection();
+    const col = db.collection('users');
+    const result = await col.find({ }).toArray();
+    client.close();
+    return result;
+  }
+
+  const updateVoted = async (email) => {
+    const { client, db } = await createConnection();
+    const col = db.collection('users');
+    const result = await col.updateOne({_id:email}, {$set:{voted:true}});
+    client.close();
+    return result;
+  }
+
   return {
     addElectionData,
     updateVotes,
     loadResults,
     addUser,
     findUser,
+    updateVoted,
+    findAllUser,
   };
 };
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const debug = require('debug')('app:resultRoutes');
-const { ifSignIn } = require('../controllers/helpers/restrictions')();
+const { ifSignIn, ifSignInAdmin } = require('../controllers/helpers/restrictions')();
 const { loadResults } = require('../controllers/helpers/mongo')();
 
 const resultRouter = express.Router();
@@ -8,7 +8,7 @@ const resultRouter = express.Router();
 function router() {
   resultRouter
     .route('/')
-    .all(ifSignIn)
+    .all(ifSignInAdmin)
     .get((req, res) => {
       const { elections } = req.user;
       res.render('results', { elections });

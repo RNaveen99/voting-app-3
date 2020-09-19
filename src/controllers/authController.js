@@ -20,7 +20,7 @@ const authController = () => {
         bcrypt.hash(userAccount.password, 10, (err, hash) => {
           userAccount.password = hash;
           addUser(userAccount).then((results) => {
-            delete results.ops[0].password;
+            // delete results.ops[0].password;
             // delete results.ops[0].allowed;
             // delete results.ops[0].voted;
 

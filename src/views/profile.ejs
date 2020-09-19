@@ -28,15 +28,12 @@
                                 <td>Email</td>
                                 <td><%=user._id%></td>
                             </tr>
-                            <tr>
-                                <td>Allowed to vote</td>
-                                <td><%=user.allowed%></td>
-                            </tr>
-                            <tr>
-                                <td>Voted</td>
-                                <td><%=user.voted%></td>
-                            </tr>
-                            
+                            <% if (user.elections && user.elections.length > 0) { %>
+                                <tr>
+                                    <td>Elections:</td>
+                                    <td><ul><% user.elections.forEach((ele) => { %><a href="/vote/<%=ele%>"><li><%=ele%></li></a><%} ) %> </ul></td>
+                                </tr>
+                                <% }%>
                         </table>
                     </div>
                 </div>

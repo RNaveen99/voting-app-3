@@ -11,9 +11,14 @@ const router = () => {
     .route('/signUp')
     .all(ifNotSignIn)
     .get((req, res) => {
-      res.render('signUp');
+      // res.render('signUp');
+      res.redirect('signin')
     })
-    .post(signUpPost);
+    .post((req, res) => {
+      res.redirect('signin')
+
+      // signUpPost
+    });
 
   authRouter
     .route('/signIn')
