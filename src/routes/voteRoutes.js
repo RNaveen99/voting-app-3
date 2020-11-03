@@ -6,11 +6,7 @@ const { ifSignIn, ifSignInAdmin } = require('../controllers/helpers/restrictions
 const voteRouter = express.Router();
 
 const router = () => {
-  voteRouter
-    .route('/')
-    .all(ifSignIn)
-    .get((req, res) => { res.redirect('/auth/profile')});
-
+  
   voteRouter
     .route('/vBoard')
     .all(ifSignInAdmin)

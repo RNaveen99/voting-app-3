@@ -18,8 +18,8 @@ const voteController = () => {
     const { electionName } = req.params;
     if (! req.user.voted) {
       const result = await loadResults(electionName);
-      await updateVotes(electionName, result, req.body)
       await updateVoted(req.user._id)      
+      await updateVotes(electionName, result, req.body)
     }
     // debug('updatevote ended')
     // debug('updatevoted started')

@@ -5,41 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <% include meta-data%>
-
+<style>
+    .content {
+        position: relative;
+    }
+    .content-table {
+        margin-top: 30px;
+    }
+    .stats {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+</style>
     <title>Status</title>
 </head>
 <body>
     <% include header%>
 
-    <div class="container">
+    <div class="containers">
         <% let total = 0, voted = 0%>
-        <div class="row">
-            <div class="col s12">
-                    <table class="highlight">
+        <div class="content row">
+            <div class="content-table col s12">
+                    <table class="highlight striped">
                         <thead>
                             <tr>
+                                <th>Sr.no.</th>
                                 <th>Roll no.</th>
                                 <th>Candidate</th>
                                 <th>Email</th>
+                                <th>Password</th>
                                 <th>Voted</th>
+                                <th>Time</th>
                             </tr>
                         </thead>
                         <tbody>
                             <% users.forEach((temp) => {%>
                             <tr>
+                                <td><%=temp.srno%></td>
                                 <td><%=temp.roll%></td>
                                 <td><%=temp.name%></td>
                                 <td><%=temp._id%></td>
-                                <td><%=temp.voted%></td>
-                                <% if(temp.voted) { voted++} total++%>
+                                <td><%=temp.password%></td>
+                                <td><% if(temp.voted){voted++ %> <a class="material-icons">check</a> <% }else {%><a class="material-icons">clear</a><%}%> </td>
+                                <td><%=temp.time%></td>
+                                <% total++ %>
                             </tr>
                             <%});%>
                         </tbody>
                     </table>
             </div>
-            <div class="right">
+            <div class="stats right">
                 Total = <%=total%>
-            <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             Voted = <%=voted%>
             </div>
         </div>

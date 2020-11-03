@@ -80,9 +80,11 @@ const mongoHelper = () => {
   }
 
   const updateVoted = async (email) => {
+    let time = new Date()
+    time = `${time.getHours()} : ${time.getMinutes()} : ${time.getSeconds()}`
     const { client, db } = await createConnection();
     const col = db.collection('users');
-    const result = await col.updateOne({_id:email}, {$set:{voted:true}});
+    const result = await col.updateOne({_id:email}, {$set:{voted:true, time }});
     client.close();
     return result;
   }

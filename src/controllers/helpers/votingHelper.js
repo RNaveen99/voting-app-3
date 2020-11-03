@@ -6,7 +6,7 @@ const votingHelper = () => {
     const temp = [];
     electionData.post.forEach((post) => {
       const postIndex = electionData.post.indexOf(post);
-      let perPostcandidates = [];
+      const perPostcandidates = [];
       electionData.candidateName[postIndex].forEach((candidate) => {
         perPostcandidates.push({ cName: candidate, votes: 0 });
       });
